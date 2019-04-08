@@ -78,7 +78,7 @@ public class JokeTagDAO
 					              "(jokeId int(20) NOT NULL," +
 					              " jokeTagWord varchar(25) NOT NULL," +
 			                      " PRIMARY KEY (jokeId, jokeTagWord)," +
-			         	          " FOREIGN KEY (jokeId) REFERENCES joke (jokeId))";
+			         	          " FOREIGN KEY (jokeId) REFERENCES joke (jokeId) ON DELETE CASCADE)";
 			statement.executeUpdate(sqlStatement);
 			statement.close();
 			disconnect();

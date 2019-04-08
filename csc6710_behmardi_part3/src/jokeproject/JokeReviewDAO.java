@@ -84,8 +84,8 @@ public class JokeReviewDAO
 		                      " reviewRemark varchar(250) DEFAULT NULL ," + 
 		                      " reviewDate date DEFAULT NULL," + 
 		                      " PRIMARY KEY (reviewUserId, reviewJokeId)," +
-				              " FOREIGN KEY (reviewUserId) REFERENCES User (userId)," +
-		         	          " FOREIGN KEY (reviewJokeId) REFERENCES Joke (jokeId))";
+				              " FOREIGN KEY (reviewUserId) REFERENCES User (userId) ON DELETE CASCADE," +
+		         	          " FOREIGN KEY (reviewJokeId) REFERENCES Joke (jokeId) ON DELETE CASCADE)";
 		statement.executeUpdate(sqlStatement);
 		sqlStatement = 	"  CREATE TRIGGER fivereviewlimit BEFORE INSERT ON JokeReview" + 
 						"  FOR EACH ROW" + 

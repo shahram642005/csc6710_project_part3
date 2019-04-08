@@ -78,8 +78,8 @@ public class FriendDAO
 					              "(userId int(20) NOT NULL," +
 					              " friendUserId int(20) NOT NULL," +
 			                      " PRIMARY KEY (userId, friendUserId)," +
-			         	          " FOREIGN KEY (userId) REFERENCES User(userId)," +
-					              " FOREIGN KEY (friendUserId) REFERENCES User(userId))"
+			         	          " FOREIGN KEY (userId) REFERENCES User(userId) ON DELETE CASCADE," +
+					              " FOREIGN KEY (friendUserId) REFERENCES User(userId) ON DELETE CASCADE)"
 					              ;
 			statement.executeUpdate(sqlStatement);
 			statement.close();

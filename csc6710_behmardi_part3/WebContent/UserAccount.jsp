@@ -19,7 +19,7 @@
 	session.setAttribute("lastPage", "listAllJokes");
 %>
 
-	<!-- header icons: user picture, welcome note, logout; search jokes, add joke, list users (only root) -->
+	<!-- header icons: user picture, welcome note, logout, search jokes, add joke, users list (only root), friend list, favorite jokes -->
 	<table>
 	<col width="600">
 	<col width="600">
@@ -56,20 +56,18 @@
 			<th align="right"><a href="logoutUser"><img src="images/logout.png" title="log out" height="70px" width="70px"></a></th>
 		</tr>
 		<tr>
-			<td/>
-			<td align="left">
+			<td align="right"><a href="goToQueries"><img src="images/query.png" title="queries" height="50px" width="50px"></a></td>
+			<td align="right">
 				<form action="searchJoke" method="post">
 					<table>
 					    <tr>
-					    	<td><input type="search" placeholder="find a joke by tag ..." title="type a joke tag" name="searchTag" size="50" value="<c:out value='${searchTag}'/>"/></td>
+					    	<td><input type="search" placeholder="find a joke by tag ..." title="type a joke tag" name="searchTag" size="25" value="<c:out value='${searchTag}'/>"/></td>
 							<td><input type="submit" title="search" value="search" /></td>
 						</tr>
 					</table>
 				</form>
 			</td>
-			<td align="center">
-				<a href="newJoke"><img src="images/newJoke.png" title="post a new joke" height="50px" width="50px"></a>
-			</td>
+			<td align="right"><a href="newJoke"><img src="images/newJoke.png" title="post a new joke" height="50px" width="50px"></a></td>
 			<c:choose>
 				<c:when test="${userId == 1}">
 					<td align="right"><a href="listAllUsers"><img src="images/listUsers.png" title="list all users" height="50px" width="50px"></a></td>
@@ -101,7 +99,7 @@
 	<div align="center">
     	<c:if test="${userList != null}">
 	        <table>
-	            <tr bgcolor="Aquamarine">
+	            <tr bgcolor="LightGray">
 	            	<c:if test="${userId == 1}">
 	                	<th width="20">ID</th>
                 	</c:if>

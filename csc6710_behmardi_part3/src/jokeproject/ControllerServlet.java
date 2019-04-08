@@ -28,6 +28,13 @@ public class ControllerServlet extends HttpServlet
 	private JokeReviewDAO jokeReviewDAO;
 	private JokeTagDAO jokeTagDAO;
 	private FavoriteJokeDAO favoriteJokeDAO;
+	private UserJokeTagDAO userJokeTagDAO;
+	private UserJokeReviewDAO userJokeReviewDAO;
+	private UserJokeNumSince03012018DAO userJokeNumSince03012018DAO;
+	private UserFriendDAO userFriendDAO;
+	private UserJokeExcellentReviewDAO userJokeExcellentReviewDAO;
+	private UserReviewScoreDAO userReviewScoreDAO;
+	private JokeReviewerDAO jokeReviewerDAO;
 	
 	/* implement the init method that runs once for the life cycle of servlet */
 	public void init()
@@ -42,6 +49,13 @@ public class ControllerServlet extends HttpServlet
 		jokeReviewDAO = new JokeReviewDAO(jdbcURL, jdbcUsername, jdbcPassword);
 		jokeTagDAO = new JokeTagDAO(jdbcURL, jdbcUsername, jdbcPassword);
 		favoriteJokeDAO = new FavoriteJokeDAO(jdbcURL, jdbcUsername, jdbcPassword);
+		userJokeTagDAO = new UserJokeTagDAO(jdbcURL, jdbcUsername, jdbcPassword);
+		userJokeReviewDAO = new UserJokeReviewDAO(jdbcURL, jdbcUsername, jdbcPassword);
+		userJokeNumSince03012018DAO = new UserJokeNumSince03012018DAO(jdbcURL, jdbcUsername, jdbcPassword);
+		userFriendDAO = new UserFriendDAO(jdbcURL, jdbcUsername, jdbcPassword);
+		userJokeExcellentReviewDAO = new UserJokeExcellentReviewDAO(jdbcURL, jdbcUsername, jdbcPassword);
+		userReviewScoreDAO = new UserReviewScoreDAO(jdbcURL, jdbcUsername, jdbcPassword);
+		jokeReviewerDAO = new JokeReviewerDAO(jdbcURL, jdbcUsername, jdbcPassword);
 	}
 	
 	/* implement the doPost method */
@@ -145,6 +159,12 @@ public class ControllerServlet extends HttpServlet
 	            case "/goBack":
 	            	goToLastPage(request, response);
 	            	break;
+	            case "/goToQueries":
+	            	goToQueries(request, response);
+	            	break;
+	            case "/runQuery":
+	            	runQuery(request, response);
+	            	break;
 	            case "/banUser":
 	                //banUser(request, response);
 	                //break;
@@ -188,6 +208,22 @@ public class ControllerServlet extends HttpServlet
 		jokeReviewDAO.initJokereviewTable();
 		jokeTagDAO.initJokeTagTable();
 		favoriteJokeDAO.initFavoriteJokeTable();
+		
+		/* create all the database views */
+		userJokeTagDAO.dropUserJokeTagView();
+		userJokeTagDAO.createUserJokeTagView();
+		userJokeReviewDAO.dropUserJokeReviewView();
+		userJokeReviewDAO.createUserJokeReviewView();
+		userJokeNumSince03012018DAO.dropUserJokeNumSince03012018View();
+		userJokeNumSince03012018DAO.createUserJokeNumSince03012018View();
+		userJokeExcellentReviewDAO.dropUserJokeExcellentReviewView();
+		userJokeExcellentReviewDAO.createUserJokeExcellentReviewView();
+		userFriendDAO.dropUserFriendView();
+		userFriendDAO.createUserFriendView();
+		userReviewScoreDAO.dropUserReviewScoreView();
+		userReviewScoreDAO.createUserReviewScoreView();
+		jokeReviewerDAO.dropJokeReviewerView();
+		jokeReviewerDAO.createJokeReviewerView();
 		
 		/* show a message indicating successful logout */
 		String message = "All tables are successfully initialized!";
@@ -1066,6 +1102,139 @@ public class ControllerServlet extends HttpServlet
 		String lastPage = session.getAttribute("lastPage").toString();
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(lastPage);
+        dispatcher.forward(request, response);
+	}
+	
+	/* go to Queries.jsp */
+	private void goToQueries(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
+	{
+		/* get userId from session */
+		HttpSession session = request.getSession();
+		int sessionUserId = Integer.parseInt(session.getAttribute("userId").toString());
+		User user = userDAO.getUser(sessionUserId);
+		
+		/* get the list of users from database */
+		List<User> dropDownUserList = userDAO.getUserList();
+		
+		/* set the page attributes */
+		request.setAttribute("userId", user.getUserId());
+		request.setAttribute("gender", user.getGender());
+		request.setAttribute("userName", user.getUserName());
+		request.setAttribute("dropDownUserList", dropDownUserList);
+		
+		/* refresh the page */
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Queries.jsp");
+        dispatcher.forward(request, response);
+	}
+	
+	/* go to Queries.jsp */
+	private void runQuery(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
+	{
+		/* get userId from session */
+		HttpSession session = request.getSession();
+		int sessionUserId = Integer.parseInt(session.getAttribute("userId").toString());
+		User user = userDAO.getUser(sessionUserId);
+		
+		/* get the list of users from database */
+		List<User> dropDownUserList = userDAO.getUserList();
+		
+		/* get userName and password from Login Form */
+		String query = request.getParameter("Queries");
+		String tagX = request.getParameter("tagX");
+		String tagY = request.getParameter("tagY");
+		String userIdXStr = request.getParameter("UserX");
+		int userIdX = Integer.parseInt(userIdXStr);
+		String userIdYStr = request.getParameter("UserY");
+		int userIdY = Integer.parseInt(userIdYStr);
+		
+		List<User> userList = new ArrayList<User>();
+		List<User> userList2 = new ArrayList<User>();
+		List<Joke> jokeList = new ArrayList<Joke>();
+		
+		switch (query)
+		{
+			case "Query2":
+				userList = userJokeTagDAO.getQueryResult(tagX, tagY);
+				break;
+			case "Query4":
+				jokeList = userJokeReviewDAO.getQueryResult(userIdX);
+				break;
+			case "Query5":
+				userList = userJokeNumSince03012018DAO.getQueryResult();
+				break;
+			case "Query6":
+				userList = userFriendDAO.getQueryResult(userIdX, userIdY);
+				break;
+			case "Query7":
+				userList = userJokeExcellentReviewDAO.getQueryResult();
+				break;
+			case "Query8":
+				userList = userReviewScoreDAO.getQueryResult();
+				break;
+			case "Query9":
+				userList = userReviewScoreDAO.getQuery2Result();
+				break;
+			case "Query10":
+				userList = userJokeReviewDAO.getQuery2Result();
+				break;
+			case "Query11":
+				jokeReviewerDAO.getQueryResult();
+				userList = jokeReviewerDAO.getUserList1();
+				userList2 = jokeReviewerDAO.getUserList2();
+				break;
+			default:
+				break;
+		}
+		
+		/* show a message on top of the table */
+		String message = "";
+		String color = "";
+		if (userList.isEmpty()) {userList = null;}
+		if (userList2.isEmpty()) {userList2 = null;}
+		if (jokeList.isEmpty()) {jokeList = null;}
+		if (query.equals("Query4"))
+		{
+			if (jokeList == null)
+			{
+				message = "no jokes to show!";
+				color = "red";
+			}
+			else
+			{
+				message = "list of jokes:";
+				color = "green";
+			}
+		}
+		else
+		{
+			if (userList == null)
+			{
+				message = "no users to show!";
+				color = "red";
+			}
+			else
+			{
+				message = "list of users:";
+				color = "green";
+			}
+		}
+		
+		/* set the page attributes */
+		request.setAttribute("userId", user.getUserId());
+		request.setAttribute("gender", user.getGender());
+		request.setAttribute("userName", user.getUserName());
+		request.setAttribute("dropDownUserList", dropDownUserList);
+		request.setAttribute("message", message);
+		request.setAttribute("color", color);
+		request.setAttribute("userList", userList);
+		request.setAttribute("userList2", userList2);
+		request.setAttribute("jokeList", jokeList);
+		request.setAttribute(query, "selected=selected");
+		request.setAttribute("selectedUserX", userIdXStr);
+		request.setAttribute("selectedUserY", userIdYStr);
+		
+		/* refresh the page */
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Queries.jsp");
         dispatcher.forward(request, response);
 	}
 }

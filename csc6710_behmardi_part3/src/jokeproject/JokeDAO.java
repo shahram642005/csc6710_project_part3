@@ -83,7 +83,7 @@ public class JokeDAO
 				              " jokePostDate date DEFAULT NULL," +
 				              " postUserId int(20) NOT NULL," +
 				              " PRIMARY KEY (jokeId)," +
-				              " FOREIGN KEY (postUserId) REFERENCES User(userId))";
+				              " FOREIGN KEY (postUserId) REFERENCES User(userId) ON DELETE CASCADE)";
 		statement.executeUpdate(sqlStatement);
 		statement.executeUpdate(sqlStatement);
 		sqlStatement =	"  CREATE TRIGGER fivejokelimit BEFORE INSERT ON Joke" + 

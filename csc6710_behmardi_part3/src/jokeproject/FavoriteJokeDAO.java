@@ -79,8 +79,8 @@ public class FavoriteJokeDAO
 					              "(jokeId int(20) NOT NULL," +
 					              " userId int(20) NOT NULL," +
 			                      " PRIMARY KEY (jokeId, userId)," +
-			         	          " FOREIGN KEY (jokeId) REFERENCES Joke (jokeId)," +
-					              " FOREIGN KEY (userId) REFERENCES User(userId))"
+			         	          " FOREIGN KEY (jokeId) REFERENCES Joke (jokeId) ON DELETE CASCADE," +
+					              " FOREIGN KEY (userId) REFERENCES User(userId) ON DELETE CASCADE)"
 					              ;
 			statement.executeUpdate(sqlStatement);
 			statement.close();
