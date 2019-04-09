@@ -151,7 +151,7 @@
 									  </c:if>
 									</c:forEach>
 				                    <c:choose>
-										<c:when test="${isBanned == 'true'}">
+										<c:when test="${user.isBanned}">
 											<a href="unbanUser?userId=<c:out value='${user.userId}' />"><img src="images/banUser.png" title="unban user" height="30%" width="30%"></a>
 										</c:when>
 										<c:otherwise>

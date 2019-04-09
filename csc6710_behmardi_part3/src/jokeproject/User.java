@@ -17,6 +17,7 @@ public class User
 	protected String email;
 	protected String gender;
 	protected int age;
+	protected boolean isBanned;
 
 	/* constructors */
 	public User() 
@@ -44,6 +45,20 @@ public class User
 		this.email = email;
 		this.gender = gender;
 		this.age = age;
+		this.isBanned = false;
+	}
+	
+	public User(int userId, String userName, String password, String firstName, String lastName, String email, String gender, int age, boolean isBanned)
+	{
+		this.userId = userId;
+		this.userName = userName;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.gender = gender;
+		this.age = age;
+		this.isBanned = isBanned;
 	}
 	
 	/* define accessors and setters methods */
@@ -125,5 +140,15 @@ public class User
 	public void setAge(int age)
 	{
 		this.age = age;
+	}
+	
+	public boolean getIsBanned()
+	{
+		return isBanned;
+	}
+	
+	public void setIsBanned(boolean isBanned)
+	{
+		this.isBanned = isBanned;
 	}
 }

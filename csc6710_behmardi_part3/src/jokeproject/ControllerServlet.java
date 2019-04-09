@@ -166,11 +166,11 @@ public class ControllerServlet extends HttpServlet
 	            	runQuery(request, response);
 	            	break;
 	            case "/banUser":
-	                //banUser(request, response);
-	                //break;
+	                banUser(request, response);
+	                break;
 	            case "/unbanUser":
-	            	//unbanUser(request, response);
-	                //break;
+	            	unbanUser(request, response);
+	                break;
 	            default:
 	            	throw new ServletException("The action \"" + action + "\" has not been implemented yet!");
             }
@@ -333,6 +333,17 @@ public class ControllerServlet extends HttpServlet
 		{
 			/* show a message indicating successful logout */
 			String message = "The user name or password is not correct, please try again!";
+			String color = "red";
+			request.setAttribute("message", message);
+			request.setAttribute("color", color);
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
+			dispatcher.forward(request, response);
+		}
+		else if (user.getUserId() != 1 && user.getIsBanned())
+		{
+			/* show a message indicating successful logout */
+			String message = "Sorry, you are banned to login by administrator!";
 			String color = "red";
 			request.setAttribute("message", message);
 			request.setAttribute("color", color);
@@ -1236,5 +1247,71 @@ public class ControllerServlet extends HttpServlet
 		/* refresh the page */
         RequestDispatcher dispatcher = request.getRequestDispatcher("Queries.jsp");
         dispatcher.forward(request, response);
+	}
+	
+	/* ban a user */
+	private void banUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
+	{
+		/* get userId from session */
+		HttpSession session = request.getSession();
+		int sessionUserId = Integer.parseInt(session.getAttribute("userId").toString());
+		
+		/* get the userId of the user */
+		int userId = Integer.parseInt(request.getParameter("userId"));
+		
+		/* only root user is allowed to ban/unban users */
+		if (sessionUserId == 1)
+		{
+			/* ban the user */
+			userDAO.banUser(userId);
+			
+			/* list all users in the browser */
+			listAllUsers(request, response);
+		}
+		else
+		{
+			/* show a message indicating successful logout */
+			String message = "You are not allowed to access user list!";
+			String color = "red";
+			request.setAttribute("message", message);
+			request.setAttribute("color", color);
+			
+			/* go to login page */
+			RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
+			dispatcher.forward(request, response);
+		}
+	}
+	
+	/* unban a user */
+	private void unbanUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
+	{
+		/* get userId from session */
+		HttpSession session = request.getSession();
+		int sessionUserId = Integer.parseInt(session.getAttribute("userId").toString());
+		
+		/* get the userId of the user */
+		int userId = Integer.parseInt(request.getParameter("userId"));
+		
+		/* only root user is allowed to ban/unban users */
+		if (sessionUserId == 1)
+		{
+			/* unban the user */
+			userDAO.unbanUser(userId);
+			
+			/* list all users in the browser */
+			listAllUsers(request, response);
+		}
+		else
+		{
+			/* show a message indicating successful logout */
+			String message = "You are not allowed to access user list!";
+			String color = "red";
+			request.setAttribute("message", message);
+			request.setAttribute("color", color);
+			
+			/* go to login page */
+			RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
+			dispatcher.forward(request, response);
+		}
 	}
 }

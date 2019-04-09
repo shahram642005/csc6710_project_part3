@@ -82,6 +82,7 @@ public class UserDAO
 							  " email VARCHAR(50), " +
 							  " gender VARCHAR(20), " +
 							  " age INTEGER, " +
+							  " isBanned INTEGER DEFAULT 0," +
 							  " PRIMARY KEY ( userId ), " + 
 							  " UNIQUE KEY (userName), " +
 							  " UNIQUE KEY (email));";
@@ -185,6 +186,38 @@ public class UserDAO
 		return status;
 	}
 	
+	/* ban a user in User table */
+	public boolean banUser(int userId) throws SQLException
+	{
+		String sqlUpdate = "UPDATE User SET isBanned = 1" +
+							" WHERE userId = ?";
+		connect();
+		PreparedStatement prepareStatement = connection.prepareStatement(sqlUpdate);
+		prepareStatement.setInt(1, userId);
+		
+		boolean status = prepareStatement.executeUpdate() > 0;
+		prepareStatement.close();
+		disconnect();
+		
+		return status;
+	}
+	
+	/* ban a user in User table */
+	public boolean unbanUser(int userId) throws SQLException
+	{
+		String sqlUpdate = "UPDATE User SET isBanned = 0" +
+							" WHERE userId = ?";
+		connect();
+		PreparedStatement prepareStatement = connection.prepareStatement(sqlUpdate);
+		prepareStatement.setInt(1, userId);
+		
+		boolean status = prepareStatement.executeUpdate() > 0;
+		prepareStatement.close();
+		disconnect();
+		
+		return status;
+	}
+	
 	/* delete a user from User table */
 	public boolean deleteUser(int userId) throws SQLException
 	{
@@ -221,8 +254,9 @@ public class UserDAO
 			String email = result.getString("email");
 			String gender = result.getString("gender");
 			int age = result.getInt("age");
+			boolean isBanned = result.getBoolean("isBanned");
 			
-			user = new User(userId, userName, password, firstName, lastName, email, gender, age);
+			user = new User(userId, userName, password, firstName, lastName, email, gender, age, isBanned);
 		}
 		
 		result.close();
@@ -252,8 +286,9 @@ public class UserDAO
 			String email = result.getString("email");
 			String gender = result.getString("gender");
 			int age = result.getInt("age");
+			boolean isBanned = result.getBoolean("isBanned");
 			
-			user = new User(userId, userName, password, firstName, lastName, email, gender, age);
+			user = new User(userId, userName, password, firstName, lastName, email, gender, age, isBanned);
 		}
 		
 		result.close();
@@ -283,8 +318,9 @@ public class UserDAO
 			String email = result.getString("email");
 			String gender = result.getString("gender");
 			int age = result.getInt("age");
+			boolean isBanned = result.getBoolean("isBanned");
 			
-			User user = new User(userId, userName, password, firstName, lastName, email, gender, age);			
+			User user = new User(userId, userName, password, firstName, lastName, email, gender, age, isBanned);			
 			userList.add(user);
 		}
 		
