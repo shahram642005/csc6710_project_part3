@@ -119,12 +119,12 @@ public class UserJokeReviewDAO
 	public List<User> getQuery2Result() throws SQLException
 	{
 		List<User> userList =  new ArrayList<User>();
-		String sqlQuery = "SELECT U.userId, U.userName" + 
-						  " FROM User U" + 
+		String sqlQuery = "SELECT R1.userId, R1.userName" + 
+						  " FROM UserJokeReview R1" + 
 						  " WHERE NOT EXISTS (" + 
 						  "					SELECT *" + 
-						  "                    FROM UserJokeReview R" + 
-						  "                    WHERE R.userId = U.userId AND R.reviewScore = 'poor'" + 
+						  "                    FROM UserJokeReview R2" + 
+						  "                    WHERE R2.userId = R1.userId AND R2.reviewScore = 'poor'" + 
 						  "				 )";
 		connect();
 		Statement statement = connection.createStatement();
