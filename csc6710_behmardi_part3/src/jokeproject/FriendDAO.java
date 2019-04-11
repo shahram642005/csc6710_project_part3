@@ -90,7 +90,7 @@ public class FriendDAO
 		/* initialize Friend table */
 		public void initFriendTable() throws SQLException
 		{			
-			/*insertFriend(new Friend(1,2));
+			insertFriend(new Friend(1,2));
 			insertFriend(new Friend(2,3));
 			insertFriend(new Friend(3,4));
 			insertFriend(new Friend(4,5));
@@ -98,9 +98,8 @@ public class FriendDAO
 			insertFriend(new Friend(6,7));
 			insertFriend(new Friend(7,8));
 			insertFriend(new Friend(8,9));
-			insertFriend(new Friend(9,10));*/
+			insertFriend(new Friend(9,10));
 			insertFriend(new Friend(1,4));
-			insertFriend(new Friend(2,3));
 			insertFriend(new Friend(3,1));
 			insertFriend(new Friend(4,1));
 			insertFriend(new Friend(5,2));

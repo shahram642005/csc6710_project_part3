@@ -107,7 +107,7 @@ public class JokeReviewDAO
 	{
 		Date date = Date.valueOf(LocalDate.now());
 		insertJokeReview(new JokeReview(1, 2, "good", "funny, but not great", date));
-		insertJokeReview(new JokeReview(1, 3, "fair", "it's so so", date));
+		insertJokeReview(new JokeReview(1, 4, "fair", "it's so so", date));
 		insertJokeReview(new JokeReview(3, 4, "poor", "not funny", date));
 		insertJokeReview(new JokeReview(4, 5, "poor", null, date));
 		insertJokeReview(new JokeReview(4, 6, "fair", "okay joke", date));
@@ -120,7 +120,7 @@ public class JokeReviewDAO
 		insertJokeReview(new JokeReview(8, 10, "excellent", null, date));
 		insertJokeReview(new JokeReview(8, 2, "excellent", "science jokes are great", date));
 		insertJokeReview(new JokeReview(9, 10, "excellent", "I love this joke", date));
-		insertJokeReview(new JokeReview(9, 11, "excellent", "funny", date));
+		insertJokeReview(new JokeReview(9, 11, "good", "funny", date));
 		insertJokeReview(new JokeReview(9, 6, "fair", "I don't get it", date));
 		insertJokeReview(new JokeReview(10, 1, "fair", "corny", date));
 		insertJokeReview(new JokeReview(10, 9, "excellent", "love it!", date));
