@@ -88,16 +88,28 @@ public class JokeTagDAO
 		/* initialize JokeTag table */
 		public void initJokeTagTable() throws SQLException
 		{			
-			insertJokeTag(new JokeTag(1, "funny"));
-			insertJokeTag(new JokeTag(2, "LOL"));
-			insertJokeTag(new JokeTag(3, "ok"));
-			insertJokeTag(new JokeTag(4, "NOTfunny"));
-			insertJokeTag(new JokeTag(5, "haha"));
-			insertJokeTag(new JokeTag(6, ":D"));
-			insertJokeTag(new JokeTag(7, "too political"));
-			insertJokeTag(new JokeTag(8, "rediculous"));
-			insertJokeTag(new JokeTag(9, "funny"));
-			insertJokeTag(new JokeTag(10, "LOL"));
+			insertJokeTag(new JokeTag(1, "coin"));
+			insertJokeTag(new JokeTag(1, "cents"));
+			insertJokeTag(new JokeTag(1, "machine"));
+			insertJokeTag(new JokeTag(2, "belt"));
+			insertJokeTag(new JokeTag(2, "watches"));
+			insertJokeTag(new JokeTag(2, "time"));
+			insertJokeTag(new JokeTag(3, "letter"));
+			insertJokeTag(new JokeTag(3, "alphabet"));
+			insertJokeTag(new JokeTag(4, "whiteboards"));
+			insertJokeTag(new JokeTag(5, "luggage"));
+			insertJokeTag(new JokeTag(6, "atoms"));
+			insertJokeTag(new JokeTag(7, "past"));
+			insertJokeTag(new JokeTag(7, "future"));
+			insertJokeTag(new JokeTag(7, "present"));
+			insertJokeTag(new JokeTag(7, "bar"));
+			insertJokeTag(new JokeTag(8, "atom"));
+			insertJokeTag(new JokeTag(8, "electron"));
+			insertJokeTag(new JokeTag(8, "ion"));
+			insertJokeTag(new JokeTag(9, "clock"));
+			insertJokeTag(new JokeTag(9, "time"));
+			insertJokeTag(new JokeTag(10, "race"));
+			insertJokeTag(new JokeTag(10, "tie"));
 		}
 		
 		/* insert a jokeTag to JokeTag table */

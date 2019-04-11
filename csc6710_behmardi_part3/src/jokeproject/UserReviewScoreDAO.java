@@ -92,7 +92,8 @@ public class UserReviewScoreDAO
 						  "					SELECT *\r\n" + 
 						  "                    FROM UserReviewScore S2" + 
 						  "                    WHERE S2.userId = U.userId AND S2.reviewScore = 'poor'" + 
-						  "				 )";
+						  "				 )" +
+						  " ORDER BY U.userId";
 		
 		connect();
 		Statement statement = connection.createStatement();
@@ -125,7 +126,8 @@ public class UserReviewScoreDAO
 						  "					SELECT *" + 
 						  "                    FROM UserReviewScore S2" + 
 						  "                    WHERE S2.userId = S1.userId AND S2.reviewScore <> 'poor'" + 
-						  "				 )";
+						  "				 )" +
+						  " ORDER BY S1.userId";
 		
 		connect();
 		Statement statement = connection.createStatement();

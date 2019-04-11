@@ -88,11 +88,12 @@ public class UserJokeExcellentReviewDAO
 		List<User> userList =  new ArrayList<User>();
 		String sqlQuery = "SELECT U.userId, U.userName" + 
 						  " FROM User U" + 
-						  " WHERE EXISTS (" + 
+						  " WHERE NOT EXISTS (" + 
 						  "					SELECT *" + 
 						  "                    FROM UserJokeExcellentReview E" + 
 						  "                    WHERE E.userId = U.userId and E.excellentCount >= 3" + 
-						  "				 )";
+						  "				 )" +
+						  " ORDER BY U.userId";
 		
 		connect();
 		Statement statement = connection.createStatement();

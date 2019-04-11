@@ -99,7 +99,7 @@
 	<div align="center">
     	<c:if test="${userList != null}">
 	        <table>
-	            <tr bgcolor="LightGray">
+	            <tr bgcolor="Aquamarine">
 	            	<c:if test="${userId == 1}">
 	                	<th width="20">ID</th>
                 	</c:if>
@@ -122,7 +122,7 @@
                 	</c:choose>
 	            </tr>
 	            <c:forEach var="user" items="${userList}">
-	                <tr bgcolor="Snow">
+	                <tr bgcolor="HoneyDew">
 	                	<c:if test="${userId == 1}">
 	                    	<td align="center"><c:out value="${user.userId}" /></td>
                     	</c:if>
@@ -179,11 +179,11 @@
 	<div align="center">
 		<c:if test="${jokeList != null}">
 	        <table>
-	            <tr bgcolor="LightGray">
-	                <th width="20">ID</th>
-	                <th width="100">Title</th>
+	            <tr bgcolor="Lavender">
+	                <th width="100">ID<a href="sort?attr=jokeId&order=<c:out value='${idOrder}' />"><img src="images/<c:out value='${idImage}' />" title="order by id" height="10%" width="10%"></a></th>
+	                <th width="100">Title<a href="sort?attr=jokeTitle&order=<c:out value='${titleOrder}' />"><img src="images/<c:out value='${titleImage}' />" title="order by title" height="10%" width="10%"></a></th>
 	                <th width="500">Text</th>
-	                <th width="100">Date</th>
+	                <th width="100">Date<a href="sort?attr=jokePostDate&order=<c:out value='${dateOrder}' />"><img src="images/<c:out value='${dateImage}' />" title="order by date" height="10%" width="10%"></a></th>
 	                <th width="100">User</th>
 	                <th width="200" colspan="3">Actions</th>
 	            </tr>
@@ -259,7 +259,7 @@
 	                	<c:if test="${jokeReview.reviewJokeId == joke.jokeId}">
 		                	<tr>
 		                		<td/>
-		                		<td bgcolor="Ivory" align="center">
+		                		<td bgcolor="LightYellow" align="center">
 			               			<c:choose>
 										<c:when test="${jokeReview.reviewScore == 'poor'}">
 				                			<img src="images/star.png" height="20px" width="20px">
@@ -287,21 +287,21 @@
 			                			</c:otherwise>
 			               			</c:choose>
 				                </td>
-		                		<td bgcolor="Ivory" align="center"><c:out value='${jokeReview.reviewRemark}'/></td>
-		                		<td bgcolor="Ivory" align="center"><c:out value='${jokeReview.reviewDate}'/></td>
-		                		<td bgcolor="Ivory" align="center"><c:out value="${userDAO.getUser(jokeReview.reviewUserId).userName}" /></td>
+		                		<td bgcolor="LightYellow" align="center"><c:out value='${jokeReview.reviewRemark}'/></td>
+		                		<td bgcolor="LightYellow" align="center"><c:out value='${jokeReview.reviewDate}'/></td>
+		                		<td bgcolor="LightYellow" align="center"><c:out value="${userDAO.getUser(jokeReview.reviewUserId).userName}" /></td>
 		                		<c:choose>
 		                    		<c:when test="${sessionUserId == 1 || sessionUserId == jokeReview.reviewUserId}">
-				                		<td bgcolor="Ivory" align="center">
+				                		<td bgcolor="LightYellow" align="center">
 				                			<a href="editReview?jokeId=<c:out value='${jokeReview.reviewJokeId}'/>&userId=<c:out value='${jokeReview.reviewUserId}'/>"><img src="images/editReview.png"  title="edit review" height="25%" width="25%"></a>
 				                		</td>
-				                		<td bgcolor="Ivory" align="center">
+				                		<td bgcolor="LightYellow" align="center">
 				                			<a href="removeReview?jokeId=<c:out value='${jokeReview.reviewJokeId}'/>&userId=<c:out value='${jokeReview.reviewUserId}'/>"><img src="images/removeReview.png"  title="remove review" height="25%" width="25%"></a>
 				                		</td>
 			                		</c:when>
 			                		<c:otherwise>
-			                			<td bgcolor="Ivory" align="center"/>
-			                			<td bgcolor="Ivory" align="center"/>
+			                			<td bgcolor="LightYellow" align="center"/>
+			                			<td bgcolor="LightYellow" align="center"/>
 			                		</c:otherwise>
 		                		</c:choose>
 		                	</tr>

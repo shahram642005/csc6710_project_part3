@@ -89,7 +89,8 @@ public class UserJokeTagDAO
 		String sqlQuery = "SELECT DISTINCT U1.userId, U1.userName" + 
 						  " FROM UserJokeTag U1, UserJokeTag U2" + 
 						  " WHERE U1.userId = U2.userId AND U1.jokeId <> U2.jokeId AND U1.jokePostDate = U2.jokePostDate AND" +
-						  " U1.jokeTagWord = ? AND U2.jokeTagWord = ?";
+						  " U1.jokeTagWord = ? AND U2.jokeTagWord = ?" +
+						  " ORDER BY U1.userId";
 		connect();
 		PreparedStatement prepareStatement = connection.prepareStatement(sqlQuery);
 		prepareStatement.setString(1, tagX);

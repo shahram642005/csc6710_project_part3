@@ -31,7 +31,6 @@ public class ControllerServlet extends HttpServlet
 	private UserJokeTagDAO userJokeTagDAO;
 	private UserJokeReviewDAO userJokeReviewDAO;
 	private UserJokeNumSince03012018DAO userJokeNumSince03012018DAO;
-	private UserFriendDAO userFriendDAO;
 	private UserJokeExcellentReviewDAO userJokeExcellentReviewDAO;
 	private UserReviewScoreDAO userReviewScoreDAO;
 	private JokeReviewerDAO jokeReviewerDAO;
@@ -52,7 +51,6 @@ public class ControllerServlet extends HttpServlet
 		userJokeTagDAO = new UserJokeTagDAO(jdbcURL, jdbcUsername, jdbcPassword);
 		userJokeReviewDAO = new UserJokeReviewDAO(jdbcURL, jdbcUsername, jdbcPassword);
 		userJokeNumSince03012018DAO = new UserJokeNumSince03012018DAO(jdbcURL, jdbcUsername, jdbcPassword);
-		userFriendDAO = new UserFriendDAO(jdbcURL, jdbcUsername, jdbcPassword);
 		userJokeExcellentReviewDAO = new UserJokeExcellentReviewDAO(jdbcURL, jdbcUsername, jdbcPassword);
 		userReviewScoreDAO = new UserReviewScoreDAO(jdbcURL, jdbcUsername, jdbcPassword);
 		jokeReviewerDAO = new JokeReviewerDAO(jdbcURL, jdbcUsername, jdbcPassword);
@@ -171,6 +169,9 @@ public class ControllerServlet extends HttpServlet
 	            case "/unbanUser":
 	            	unbanUser(request, response);
 	                break;
+	            case "/sort":
+	            	sortJokes(request, response);
+	                break;
 	            default:
 	            	throw new ServletException("The action \"" + action + "\" has not been implemented yet!");
             }
@@ -218,8 +219,6 @@ public class ControllerServlet extends HttpServlet
 		userJokeNumSince03012018DAO.createUserJokeNumSince03012018View();
 		userJokeExcellentReviewDAO.dropUserJokeExcellentReviewView();
 		userJokeExcellentReviewDAO.createUserJokeExcellentReviewView();
-		userFriendDAO.dropUserFriendView();
-		userFriendDAO.createUserFriendView();
 		userReviewScoreDAO.dropUserReviewScoreView();
 		userReviewScoreDAO.createUserReviewScoreView();
 		jokeReviewerDAO.dropJokeReviewerView();
@@ -632,7 +631,7 @@ public class ControllerServlet extends HttpServlet
 		List<Joke> jokeList = jokeDAO.getJokeList();
 		
 		/* list the jokes in the browser */
-		listJokes(request, response, jokeList);
+		listJokes(request, response, jokeList, null);
 	}
 	
 	/* list user's jokes */
@@ -644,7 +643,7 @@ public class ControllerServlet extends HttpServlet
 		List<Joke> jokeList = jokeDAO.getUserJokes(userId);
 		
 		/* list the jokes in the browser */
-		listJokes(request, response, jokeList);
+		listJokes(request, response, jokeList, null);
 	}
 	
 	/* list favorite jokes */
@@ -658,11 +657,11 @@ public class ControllerServlet extends HttpServlet
 		List<Joke> jokeList = favoriteJokeDAO.getFavJokes(sessionUserId);
 		
 		/* list the jokes in the browser */
-		listJokes(request, response, jokeList);
+		listJokes(request, response, jokeList, null);
 	}
 	
 	/* list jokes */
-	private void listJokes(HttpServletRequest request, HttpServletResponse response, List<Joke> jokeList) throws SQLException, IOException, ServletException
+	private void listJokes(HttpServletRequest request, HttpServletResponse response, List<Joke> jokeList, String[] sortAttr) throws SQLException, IOException, ServletException
 	{
 		/* get userId from session */
 		HttpSession session = request.getSession();
@@ -708,7 +707,19 @@ public class ControllerServlet extends HttpServlet
 			message = "list of jokes:";
 			color = "green";
 		}
-
+		
+		/* default sorting */
+		if (sortAttr == null)
+		{
+			sortAttr = new String[6];
+			sortAttr[0] = "ASC";
+			sortAttr[1] = "upSort.png";
+			sortAttr[2] = "ASC";
+			sortAttr[3] = "noSort.png";
+			sortAttr[4] = "ASC";
+			sortAttr[5] = "noSort.png";
+		}
+		
 		/* show the list of user's jokes */
 		String gender = user.getGender();
 		request.setAttribute("user", user);
@@ -722,6 +733,12 @@ public class ControllerServlet extends HttpServlet
 		request.setAttribute("gender", gender);
 		request.setAttribute("message", message);
 		request.setAttribute("color", color);
+		request.setAttribute("idOrder", sortAttr[0]);
+		request.setAttribute("idImage", sortAttr[1]);
+		request.setAttribute("titleOrder", sortAttr[2]);
+		request.setAttribute("titleImage", sortAttr[3]);
+		request.setAttribute("dateOrder", sortAttr[4]);
+		request.setAttribute("dateImage", sortAttr[5]);
 		
 		/* refresh the page */
         RequestDispatcher dispatcher = request.getRequestDispatcher("UserAccount.jsp");
@@ -912,7 +929,7 @@ public class ControllerServlet extends HttpServlet
 			request.setAttribute("searchTag", tag);
 			
 			/* list the jokes in the browser */
-			listJokes(request, response, jokeList);
+			listJokes(request, response, jokeList, null);
 		}
 		else
 		{
@@ -1174,7 +1191,7 @@ public class ControllerServlet extends HttpServlet
 				userList = userJokeNumSince03012018DAO.getQueryResult();
 				break;
 			case "Query6":
-				userList = userFriendDAO.getQueryResult(userIdX, userIdY);
+				userList = friendDAO.getQueryResult(userIdX, userIdY);
 				break;
 			case "Query7":
 				userList = userJokeExcellentReviewDAO.getQueryResult();
@@ -1313,5 +1330,70 @@ public class ControllerServlet extends HttpServlet
 			RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
 			dispatcher.forward(request, response);
 		}
+	}
+	
+	/* sort table based on a attribute of a column */
+	private void sortJokes(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException
+	{		
+		/* get the page attributes */
+		String attr = request.getParameter("attr");
+		String order = request.getParameter("order");
+		
+		/* list of all jokes ordered by an attribute */
+		List<Joke> jokeList = jokeDAO.getJokeList("J." + attr + " " + order);
+		
+		/* determine the images and action for sorting */
+		String[] sortAttr = new String[6];
+		sortAttr[0] = "ASC";
+		sortAttr[1] = "noSort.png";
+		sortAttr[2] = "ASC";
+		sortAttr[3] = "noSort.png";
+		sortAttr[4] = "ASC";
+		sortAttr[5] = "noSort.png";
+		
+		switch (attr)
+		{
+			case "jokeId":
+				if (order.equals("ASC"))
+				{
+					sortAttr[0] = "DESC";
+					sortAttr[1] = "downSort.png";
+				}
+				else
+				{
+					sortAttr[0] = "ASC";
+					sortAttr[1] = "upSort.png";
+				}
+				break;
+			case "jokeTitle":
+				if (order.equals("ASC"))
+				{
+					sortAttr[2] = "DESC";
+					sortAttr[3] = "downSort.png";
+				}
+				else
+				{
+					sortAttr[2] = "ASC";
+					sortAttr[3] = "upSort.png";
+				}
+				break;
+			case "jokePostDate":
+				if (order.equals("ASC"))
+				{
+					sortAttr[4] = "DESC";
+					sortAttr[5] = "downSort.png";
+				}
+				else
+				{
+					sortAttr[4] = "ASC";
+					sortAttr[5] = "upSort.png";
+				}
+				break;
+			default:
+				break;
+		}
+		
+		/* list the jokes in the browser */
+		listJokes(request, response, jokeList, sortAttr);
 	}
 }

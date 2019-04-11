@@ -86,8 +86,8 @@
 	</table>
     
     <!-- select and run Queries -->
-    <div align="center">
-        <form action="runQuery" method="post">
+	<form action="runQuery" method="post">
+        <div align="center">
         	<table>
         		<tr><td>Select your query:</td></tr>
 	        	<tr>
@@ -150,7 +150,6 @@
 					<!-- msg on top of the tables -->
 					<td>
 						<h2 style="text-align:center">
-							<br>
 						    <c:if test="${message != null && color != null}">
 						        <font color=<c:out value="${color}"></c:out>><c:out value="${message}"></c:out></font>
 						    </c:if>
@@ -158,8 +157,8 @@
 					</td>
 				</tr>
         	</table>
-        </form>
-    </div>
+		</div>
+	</form>
     
     <!-- listUser table (only root) -->
 	<div align="center">
@@ -168,12 +167,12 @@
 				<td>
 			    	<c:if test="${userList != null}">
 				        <table>
-				            <tr bgcolor="LightGray">
+				            <tr bgcolor="Aquamarine">
 				            	<th width="20">ID</th>
 				                <th width="100">User Name</th>
 				            </tr>
 				            <c:forEach var="user" items="${userList}">
-				                <tr bgcolor="Snow">
+				                <tr bgcolor="HoneyDew">
 				                	<td align="center"><c:out value="${user.userId}" /></td>
 				                    <td align="center"><c:out value="${user.userName}" /></td>
 				                </tr>
@@ -184,12 +183,12 @@
 		        <td>
 			        <c:if test="${userList2 != null}">
 				        <table>
-				            <tr bgcolor="LightGray">
+				            <tr bgcolor="Pink">
 				            	<th width="20">ID</th>
 				                <th width="100">User Name</th>
 				            </tr>
 				            <c:forEach var="user" items="${userList2}">
-				                <tr bgcolor="Snow">
+				                <tr bgcolor="PeachPuff">
 				                	<td align="center"><c:out value="${user.userId}" /></td>
 				                    <td align="center"><c:out value="${user.userName}" /></td>
 				                </tr>
@@ -205,7 +204,7 @@
 	<div align="center">
 		<c:if test="${jokeList != null}">
 	        <table>
-	            <tr bgcolor="LightGray">
+	            <tr bgcolor="Lavender">
 	                <th width="100">ID</th>
 	                <th width="100">Title</th>
 	                <th width="100">Text</th>

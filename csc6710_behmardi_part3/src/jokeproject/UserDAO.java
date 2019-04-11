@@ -330,4 +330,37 @@ public class UserDAO
 		
 		return userList;
 	}
+	
+	/* get list of all users from user table ordered by an attribute */
+	public List<User> getUserList(String order) throws SQLException
+	{
+		List<User> userList =  new ArrayList<User>();
+		String sqlQuery = "SELECT * FROM User U ORDER BY " + order;
+		
+		connect();
+		Statement statement = connection.createStatement();
+		ResultSet result = statement.executeQuery(sqlQuery);
+		
+		while(result.next())
+		{
+			int userId = result.getInt("userId");
+			String userName = result.getString("userName");
+			String password = result.getString("password");
+			String firstName = result.getString("firstName");
+			String lastName = result.getString("lastName");
+			String email = result.getString("email");
+			String gender = result.getString("gender");
+			int age = result.getInt("age");
+			boolean isBanned = result.getBoolean("isBanned");
+			
+			User user = new User(userId, userName, password, firstName, lastName, email, gender, age, isBanned);			
+			userList.add(user);
+		}
+		
+		result.close();
+		statement.close();
+		disconnect();
+		
+		return userList;
+	}
 }

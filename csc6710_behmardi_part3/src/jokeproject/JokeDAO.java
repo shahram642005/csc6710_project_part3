@@ -107,16 +107,16 @@ public class JokeDAO
 		/* insert the default jokes */
 		List<Joke> jokeList = new ArrayList<Joke>();
 		Date date = Date.valueOf(LocalDate.now());
-		jokeList.add(new Joke("joke1", "Text1", date, 1));
-		jokeList.add(new Joke("joke2", "Text2", date, 2));
-		jokeList.add(new Joke("joke3", "Text3", date, 3));
-		jokeList.add(new Joke("joke4", "Text4", date, 4));
-		jokeList.add(new Joke("joke5", "Text5", date, 5));
-		jokeList.add(new Joke("joke6", "Text6", date, 6));
-		jokeList.add(new Joke("joke7", "Text7", date, 7));
-		jokeList.add(new Joke("joke8", "Text8", date, 8));
-		jokeList.add(new Joke("joke9", "Text9", date, 9));
-		jokeList.add(new Joke("joke10", "Text10", date, 10));
+		jokeList.add(new Joke("joke1", "The machine at the coin factory just suddenly stopped working, with no explanation. It doesn’t make any cents!", date, 1));
+		jokeList.add(new Joke("joke2", "I was going to make myself a belt made out of watches, but then I realized it would be a waist of time.", date, 2));
+		jokeList.add(new Joke("joke3", "I’m only friends with 25 letters of the alphabet. I don’t know Y.", date, 3));
+		jokeList.add(new Joke("joke4", "I’m a big fan of whiteboards. I find them quite re-markable.", date, 4));
+		jokeList.add(new Joke("joke5", "A man sued an airline company after it lost his luggage. Sadly, he lost his case.", date, 5));
+		jokeList.add(new Joke("joke6", "Atoms are untrustworthy little critters. They make up everything!", date, 6));
+		jokeList.add(new Joke("joke7", "The past, the present, and the future walk into a bar…It was tense", date, 7));
+		jokeList.add(new Joke("joke8", "An atom loses an electron… it says, “Man, I really gotta keep an ion them.", date, 8));
+		jokeList.add(new Joke("joke9", "6:30 is the best time on a clock… hands down.", date, 9));
+		jokeList.add(new Joke("joke10", "Did you hear about the 2 silk worms in a race? It ended in a tie!", date, 10));
 		insertJoke(jokeList);
 	}
 	
@@ -272,7 +272,35 @@ public class JokeDAO
 	public List<Joke> getJokeList() throws SQLException
 	{
 		List<Joke> jokeList =  new ArrayList<Joke>();
-		String sqlQuery = "SELECT * FROM Joke";
+		String sqlQuery = "SELECT * FROM Joke J ORDER BY J.jokeId DESC";
+		
+		connect();
+		Statement statement = connection.createStatement();
+		ResultSet result = statement.executeQuery(sqlQuery);
+		
+		while(result.next())
+		{
+			int jokeId = result.getInt("jokeId");
+			String jokeTitle = result.getString("jokeTitle");
+			String jokeText = result.getString("jokeText");
+			Date jokePostDate = result.getDate("jokePostDate");
+			int postUserId = result.getInt("postUserId");
+			
+			Joke joke = new Joke(jokeId, jokeTitle, jokeText, jokePostDate, postUserId);			
+			jokeList.add(joke);
+		}
+		result.close();
+		statement.close();
+		disconnect();
+		
+		return jokeList;
+	}
+	
+	/* get list of all jokes from joke table */
+	public List<Joke> getJokeList(String order) throws SQLException
+	{
+		List<Joke> jokeList =  new ArrayList<Joke>();
+		String sqlQuery = "SELECT * FROM Joke J ORDER BY " + order;
 		
 		connect();
 		Statement statement = connection.createStatement();

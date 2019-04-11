@@ -90,7 +90,7 @@ public class FriendDAO
 		/* initialize Friend table */
 		public void initFriendTable() throws SQLException
 		{			
-			insertFriend(new Friend(1,2));
+			/*insertFriend(new Friend(1,2));
 			insertFriend(new Friend(2,3));
 			insertFriend(new Friend(3,4));
 			insertFriend(new Friend(4,5));
@@ -98,7 +98,13 @@ public class FriendDAO
 			insertFriend(new Friend(6,7));
 			insertFriend(new Friend(7,8));
 			insertFriend(new Friend(8,9));
-			insertFriend(new Friend(9,10));
+			insertFriend(new Friend(9,10));*/
+			insertFriend(new Friend(1,4));
+			insertFriend(new Friend(2,3));
+			insertFriend(new Friend(3,1));
+			insertFriend(new Friend(4,1));
+			insertFriend(new Friend(5,2));
+			
 		}
 		
 		/* insert a friend to Friend table */
@@ -192,5 +198,37 @@ public class FriendDAO
 			disconnect();
 			
 			return friendList;
+		}
+		
+		/* run the query and return the result */
+		public List<User> getQueryResult(int userId1, int userId2) throws SQLException
+		{
+			List<User> userList =  new ArrayList<User>();
+			String sqlQuery = "SELECT U.userId, U.userName" + 
+							  " FROM User U, Friend F1, Friend F2" + 
+							  " WHERE F1.userId = ? AND F2.userId = ?" +
+							  "		  AND F1.friendUserId = F2.friendUserId AND F1.friendUserId = U.userId" +
+							  " ORDER BY U.userId";
+			connect();
+			PreparedStatement prepareStatement = connection.prepareStatement(sqlQuery);
+			prepareStatement.setInt(1, userId1);
+			prepareStatement.setInt(2, userId2);
+			
+			ResultSet result = prepareStatement.executeQuery();
+			
+			while(result.next())
+			{
+				int userId = result.getInt("userId");
+				String userName = result.getString("userName");
+				
+				User user = new User(userId, userName, null, null, null, null, null, 0);			
+				userList.add(user);
+			}
+			
+			result.close();
+			prepareStatement.close();
+			disconnect();
+			
+			return userList;
 		}
 }

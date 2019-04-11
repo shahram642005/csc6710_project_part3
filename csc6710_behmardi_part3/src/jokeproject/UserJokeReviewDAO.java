@@ -91,7 +91,8 @@ public class UserJokeReviewDAO
 						  " WHERE R1.userId = ? AND NOT EXISTS( SELECT *" + 
 															  " FROM UserJokeReview R2" +
 						  									  " WHERE R2.jokeId = R1.jokeId AND" + 
-						  											" (R2.reviewScore <> 'excellent' AND R2.reviewScore <> 'good'))";
+						  											" (R2.reviewScore <> 'excellent' AND R2.reviewScore <> 'good'))" +
+						  " ORDER BY R1.jokeId";
 		connect();
 		PreparedStatement prepareStatement = connection.prepareStatement(sqlQuery);
 		prepareStatement.setInt(1, userId);
@@ -119,13 +120,14 @@ public class UserJokeReviewDAO
 	public List<User> getQuery2Result() throws SQLException
 	{
 		List<User> userList =  new ArrayList<User>();
-		String sqlQuery = "SELECT R1.userId, R1.userName" + 
+		String sqlQuery = "SELECT DISTINCT R1.userId, R1.userName" + 
 						  " FROM UserJokeReview R1" + 
 						  " WHERE NOT EXISTS (" + 
 						  "					SELECT *" + 
 						  "                    FROM UserJokeReview R2" + 
 						  "                    WHERE R2.userId = R1.userId AND R2.reviewScore = 'poor'" + 
-						  "				 )";
+						  "				 )" +
+						  " ORDER BY R1.userId";
 		connect();
 		Statement statement = connection.createStatement();
 		

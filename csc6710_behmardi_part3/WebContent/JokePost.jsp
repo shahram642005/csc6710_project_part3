@@ -54,7 +54,7 @@
 		</tr>
 	</table>
     <div align="center">
-    	<form action=<c:out value="${formAction}" /> method="post">
+    	<form id="jokePostFrom" action=<c:out value="${formAction}" /> method="post">
 	        <table>
 	        	<tr>
 	        		<td>
@@ -70,7 +70,7 @@
 	            </tr>
 	            <tr><td>Description:</td></tr>
 	            <tr>
-	                <td><input type="text" name="description" size="50" placeholder="description of your joke" value="<c:out value='${joke.jokeText}' />" /></td>
+	                <td><textarea rows="4" cols="42" name="description" placeholder="description of your joke" form="jokePostFrom" /><c:out value='${joke.jokeText}' /></textarea></td>
 	            </tr>
 	            <tr><td>Tags:</td></tr>
 	            <tr>

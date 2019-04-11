@@ -106,16 +106,24 @@ public class JokeReviewDAO
 	public void initJokereviewTable() throws SQLException
 	{
 		Date date = Date.valueOf(LocalDate.now());
-		insertJokeReview(new JokeReview(1, 2, "excellent", null, date));
-		insertJokeReview(new JokeReview(2, 3, "good", null, date));
-		insertJokeReview(new JokeReview(3, 4, "fair", null, date));
+		insertJokeReview(new JokeReview(1, 2, "good", "funny, but not great", date));
+		insertJokeReview(new JokeReview(1, 3, "fair", "it's so so", date));
+		insertJokeReview(new JokeReview(3, 4, "poor", "not funny", date));
 		insertJokeReview(new JokeReview(4, 5, "poor", null, date));
-		insertJokeReview(new JokeReview(5, 6, "excellent", null, date));
-		insertJokeReview(new JokeReview(6, 7, "good", null, date));
-		insertJokeReview(new JokeReview(7, 8, "fair", null, date));
-		insertJokeReview(new JokeReview(8, 9, "poor", null, date));
-		insertJokeReview(new JokeReview(9, 10, "excellent", null, date));
-		insertJokeReview(new JokeReview(10, 1, "good", null, date));
+		insertJokeReview(new JokeReview(4, 6, "fair", "okay joke", date));
+		insertJokeReview(new JokeReview(5, 6, "good", "funny", date));
+		insertJokeReview(new JokeReview(6, 7, "excellent", "silly, but funny", date));
+		insertJokeReview(new JokeReview(7, 8, "excellent", "hilarious", date));
+		insertJokeReview(new JokeReview(7, 9, "excellent", "this is my favorite joke on the site", date));
+		insertJokeReview(new JokeReview(7, 1, "excellent", "I love the \"walk into a bar\" jokes", date));
+		insertJokeReview(new JokeReview(8, 9, "excellent", "funny, but why untrustworthy?", date));
+		insertJokeReview(new JokeReview(8, 10, "excellent", null, date));
+		insertJokeReview(new JokeReview(8, 2, "excellent", "science jokes are great", date));
+		insertJokeReview(new JokeReview(9, 10, "excellent", "I love this joke", date));
+		insertJokeReview(new JokeReview(9, 11, "excellent", "funny", date));
+		insertJokeReview(new JokeReview(9, 6, "fair", "I don't get it", date));
+		insertJokeReview(new JokeReview(10, 1, "fair", "corny", date));
+		insertJokeReview(new JokeReview(10, 9, "excellent", "love it!", date));
 	}
 	
 	/* insert a joke to JokeReview table */

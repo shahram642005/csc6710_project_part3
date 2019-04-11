@@ -88,7 +88,8 @@ public class UserJokeNumSince03012018DAO
 		List<User> userList =  new ArrayList<User>();
 		String sqlQuery = "SELECT U1.userId, U1.userName" + 
 						  " FROM UserJokeNumSince03012018 U1" + 
-						  " WHERE U1.jokeCount >= (SELECT MAX(U2.jokeCount) FROM UserJokeNumSince03012018 U2)";
+						  " WHERE U1.jokeCount >= (SELECT MAX(U2.jokeCount) FROM UserJokeNumSince03012018 U2)" +
+						  " ORDER BY U1.userId";
 		connect();
 		Statement statement = connection.createStatement();
 		
